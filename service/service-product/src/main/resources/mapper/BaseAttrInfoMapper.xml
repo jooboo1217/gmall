@@ -15,4 +15,28 @@
         id,attr_name,category_id,
         category_level
     </sql>
+    
+<!--    因为查找到的数据不能直接映射到vo中，需要手动创建结果集
+        select  *
+        from base_attr_info bai left join base_attr_value bav
+        on bai.id = bav.attr_id
+        where (bai.category_id=0 and bai.category_level=1)
+        or  (bai.category_id=0 and bai.category_level=2)
+        or  (bai.category_id=61 and bai.category_level=3)-->
+    
+    
+    <resultMap id="attrInfoAndValue" autoMapping="true" type="com.atguigu.gmall.model.product.BaseAttrInfo">
+        <id column="id" property="id"></id>
+        <collection property="attrValueList" autoMapping="true" ofType="com.atguigu.gmall.model.product.BaseAttrValue">
+            <id column="id" property="id"></id>
+        </collection>
+    </resultMap>
+    <select id="getAttrInfoAndVlue" resultMap="attrInfoAndValue">
+        select  bai.*,bav.value_name,bav.attr_id
+        from base_attr_info bai left join base_attr_value bav
+        on bai.id = bav.attr_id
+        where (bai.category_id=#{c1Id} and bai.category_level=1)
+           or  (bai.category_id=#{c2Id} and bai.category_level=2)
+           or  (bai.category_id=#{c3Id} and bai.category_level=3)
+    </select>
 </mapper>
