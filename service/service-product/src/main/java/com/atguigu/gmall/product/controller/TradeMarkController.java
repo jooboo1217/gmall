@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/admin/product")
 public class TradeMarkController {
@@ -56,5 +58,14 @@ public class TradeMarkController {
     public Result updateTradeMark(@RequestBody BaseTrademark baseTrademark){
         baseTrademarkService.updateById(baseTrademark);
         return Result.ok();
+    }
+
+    //添加spu需要所有的品牌
+    @GetMapping("/baseTrademark/getTrademarkList")
+    public Result getTradeMark(){
+        //http://192.168.6.1/admin/product/baseTrademark/getTrademarkList
+
+        List<BaseTrademark> list = baseTrademarkService.list();
+        return Result.ok(list);
     }
 }

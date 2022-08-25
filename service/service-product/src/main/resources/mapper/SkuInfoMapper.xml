@@ -23,4 +23,8 @@
         tm_id,category3_id,sku_default_img,
         is_sale
     </sql>
+    <!--sku上架与下架-->
+    <update id="updateIssale">
+        update sku_info set is_sale=#{i} where id=#{skuId}
+    </update>
 </mapper>

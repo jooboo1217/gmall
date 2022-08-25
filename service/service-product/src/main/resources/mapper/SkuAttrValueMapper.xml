@@ -14,5 +14,6 @@
     <sql id="Base_Column_List">
         id,attr_id,value_id,
         sku_id
+
     </sql>
 </mapper>

@@ -3,6 +3,7 @@ package com.atguigu.gmall.product.mapper;
 
 import com.atguigu.gmall.model.product.SkuInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author 10760
@@ -12,6 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface SkuInfoMapper extends BaseMapper<SkuInfo> {
 
+    void updateIssale(@Param("skuId") Long skuId, @Param("i") Integer i);
 }
 
 
