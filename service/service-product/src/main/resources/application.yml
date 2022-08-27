@@ -4,6 +4,11 @@ spring:
     password: 123456
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://192.168.6.200:3306/gmall_product?useSSL=false&characterEncoding=utf-8
+#    链路追踪
+  zipkin:
+    base-url: http://192.168.6.200:9411/
+    sender:
+      type: web
 server:
   port: 9000
 
@@ -12,3 +17,5 @@ minio:
   accessKey: admin
   secreKey: admin123456
   bucketName: gmall
+
+

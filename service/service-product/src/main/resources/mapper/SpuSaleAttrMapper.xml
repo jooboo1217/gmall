@@ -31,4 +31,34 @@
                                          on ssa.spu_id=ssav.spu_id and ssa.sale_attr_name = ssav.sale_attr_name
         where ssa.spu_id=#{spuId}
     </select>
+
+
+    <!--    销售属性名和值的封装规则-->
+    <resultMap id="SaleAttrNameAndValueRM"
+               type="com.atguigu.gmall.model.product.SpuSaleAttr"
+               autoMapping="true">
+        <id column="id" property="id"></id>
+        <collection property="spuSaleAttrValueList"
+                    ofType="com.atguigu.gmall.model.product.SpuSaleAttrValue"
+                    autoMapping="true">
+            <id column="vid" property="id"></id>
+        </collection>
+    </resultMap>
+    <!--查询某个sku对应的spu定义的所有销售属性名和值，并标记出当前sku是那种组合    -->
+
+    <select id="getSaleAttrAndValueMarkSku"
+            resultMap="SaleAttrNameAndValueRM">
+        select ssa.*,
+               ssav.id  vid,
+               ssav.sale_attr_value_name,
+               IF(skuv.sale_attr_value_id  IS NULL,'0','1') as is_checked
+        from spu_sale_attr ssa
+                 left join spu_sale_attr_value ssav
+                           on ssa.spu_id = ssav.spu_id
+                               and ssa.base_sale_attr_id=ssav.base_sale_attr_id
+                 left join sku_sale_attr_value skuv
+                           on ssav.id = skuv.sale_attr_value_id and skuv.sku_id=#{skuId}
+        where ssa.spu_id=#{spuId}
+        order by ssa.id,ssav.id
+    </select>
 </mapper>

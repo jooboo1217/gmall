@@ -13,4 +13,36 @@
     <sql id="Base_Column_List">
         id,name,category1_id
     </sql>
+    
+    
+    <!--自定义结果集-->
+    <resultMap id="CategoryTreeRm" type="com.atguigu.gmall.model.to.CategoryTreeTo">
+<!--        一级分类的信息-->
+        <id column="id" property="categoryId"></id>
+        <result column="name" property="categoryName"></result>
+        <collection property="categoryChild" ofType="com.atguigu.gmall.model.to.CategoryTreeTo">
+            <!--        二级分类的信息-->
+            <id column="c2_id" property="categoryId"></id>
+            <result column="c2_name" property="categoryName"></result>
+            <collection property="categoryChild" ofType="com.atguigu.gmall.model.to.CategoryTreeTo">
+                <!--        三级分类的信息-->
+                <id column="c3_id" property="categoryId"></id>
+                <result column="c3_name" property="categoryName"></result>
+            </collection>
+        </collection>
+    </resultMap>
+    <!--查询一、二、三级分类的所有数据，首页需要展示用来检索-->
+    <select id="getAllCategoryWithTree" resultMap="CategoryTreeRm">
+        select bc1.*,
+               bc2.id c2_id,
+               bc2.name c2_name,
+               bc2.category1_id,
+               bc3.id c3_id,
+               bc3.name c3_name,
+               bc3.category2_id
+        from
+            base_category1 bc1
+                left join base_category2 bc2 on  bc1.id = bc2.category1_id
+                left join base_category3 bc3 on bc2.id = bc3.category2_id
+    </select>
 </mapper>
