@@ -17,7 +17,7 @@ public class BaseAttrInfoController {
     BaseAttrInfoService baseAttrInfoService;
     @Autowired
     BaseAttrValueService baseAttrValueService;
-    //展示没级分类下的属性
+    //展示每级分类下的属性
     ///attrInfoList/1/0/0
     @GetMapping("/attrInfoList/{c1Id}/{c2Id}/{c3Id}")
     public Result getAttrInfoList(@PathVariable("c1Id")Long c1Id,

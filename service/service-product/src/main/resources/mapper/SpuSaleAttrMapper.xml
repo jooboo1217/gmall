@@ -28,7 +28,7 @@
     <select id="getAttrAndValue" resultMap="getAttrAndValue">
         select ssa.*,ssav.id vid,ssav.sale_attr_value_name
         from spu_sale_attr ssa left join spu_sale_attr_value ssav
-                                         on ssa.spu_id=ssav.spu_id and ssa.sale_attr_name = ssav.sale_attr_name
+        on ssa.spu_id=ssav.spu_id and ssa.sale_attr_name = ssav.sale_attr_name
         where ssa.spu_id=#{spuId}
     </select>
 
@@ -60,5 +60,30 @@
                            on ssav.id = skuv.sale_attr_value_id and skuv.sku_id=#{skuId}
         where ssa.spu_id=#{spuId}
         order by ssa.id,ssav.id
+    </select>
+
+
+
+
+<!--   按照指定格式，查询spu下的slu所有的销售组合，主要使用 GROUP_CONCAT(.....)-->
+    <select id="getAllSkuSaleAttrValueJson" resultType="com.atguigu.gmall.model.to.ValueSkuJsonTo">
+        select a.sku_id,
+               GROUP_CONCAT(DISTINCT sale_attr_value_id
+                            ORDER BY sale_attr_value_id ASC
+                            SEPARATOR '|') as value_json
+        from (select si.id sku_id,
+                     skuav.id vid,
+                     skuav.spu_id,
+                     skuav.sale_attr_value_id,
+                     ssav.base_sale_attr_id
+              from sku_info  si
+                       left join sku_sale_attr_value skuav on si.id = skuav.sku_id
+                       left join spu_sale_attr_value ssav on skuav.sale_attr_value_id = ssav.id
+              WHERE si.spu_id=#{spuId} ORDER BY si.id,ssav.base_sale_attr_id,skuav.sale_attr_value_id) a
+        GROUP BY a.sku_id
+
+
+
+
     </select>
 </mapper>

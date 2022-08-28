@@ -6,8 +6,6 @@ import com.atguigu.gmall.model.to.CategoryViewTo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
-
 /**
 * @author 10760
 * @description 针对表【base_category3(三级分类表)】的数据库操作Mapper

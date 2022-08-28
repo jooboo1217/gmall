@@ -5,6 +5,7 @@ import com.atguigu.gmall.model.to.CategoryViewTo;
 import com.atguigu.gmall.model.to.SkuDetailTo;
 import com.atguigu.gmall.product.mapper.BaseCategory3Mapper;
 import com.atguigu.gmall.product.service.*;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.atguigu.gmall.product.mapper.SkuInfoMapper;
@@ -129,6 +130,11 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo>
         detailTo.setSpuSaleAttrList(saleAttrList);
 
         //5、商品（sku）类似推荐    （x）
+        //valuesSkuJson
+        Long spuId = skuInfo.getSpuId();
+        String valuesSkuJson =  spuSaleAttrService.getAllSkuSaleAttrValueJson(spuId);
+        detailTo.setValuesSkuJson(valuesSkuJson);
+
         //6、商品（sku）介绍[所属的spu的海报]        spu_poster（x）
         //7、商品（sku）的规格参数                  sku_attr_value
         //8、商品（sku）售后、评论...              相关的表 (x)
@@ -143,6 +149,19 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo>
         //性能低下
         BigDecimal price = skuInfoMapper.getRealPrice(skuId);
         return price;
+    }
+
+    //通过skuId查询sku的所有信息
+    @Override
+    public SkuInfo getDetailSkuInfo(Long skuId) {
+        SkuInfo skuInfo = skuInfoMapper.selectById(skuId);
+        return skuInfo;
+    }
+    //通过skuId查询所有对应的图片
+    @Override
+    public List<SkuImage> getDetailSkuImages(Long skuId) {
+        List<SkuImage> skuImage = skuImageService.getSkuImage(skuId);
+        return skuImage;
     }
 
 

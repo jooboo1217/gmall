@@ -28,11 +28,11 @@
     <resultMap id="attrInfoAndValue" autoMapping="true" type="com.atguigu.gmall.model.product.BaseAttrInfo">
         <id column="id" property="id"></id>
         <collection property="attrValueList" autoMapping="true" ofType="com.atguigu.gmall.model.product.BaseAttrValue">
-            <id column="id" property="id"></id>
+            <id column="vid" property="id"></id>
         </collection>
     </resultMap>
     <select id="getAttrInfoAndVlue" resultMap="attrInfoAndValue">
-        select  bai.*,bav.value_name,bav.attr_id
+        select  bai.*,bav.id vid,bav.value_name,bav.attr_id
         from base_attr_info bai left join base_attr_value bav
         on bai.id = bav.attr_id
         where (bai.category_id=#{c1Id} and bai.category_level=1)

@@ -10,7 +10,7 @@ spring:
     sender:
       type: web
 server:
-  port: 9000
+  port: 9001
 
 minio:
   endpoint: http://192.168.6.200:9000
