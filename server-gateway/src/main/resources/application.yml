@@ -28,3 +28,8 @@ spring:
           uri: lb://web-all
           predicates:
             - Host=**.gmall.com
+
+        - id: incr_route
+            uri: lb://service-item
+            predicates:
+              - Path=/lock/incr

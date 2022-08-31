@@ -1,13 +1,15 @@
 package com.atguigu.gmall.product;
 
+import com.atguigu.gmall.common.config.RedissonAutoConfiguration;
+import com.atguigu.gmall.common.config.annotation.EnableThreadPool;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
-
-@Import({com.atguigu.gmall.common.config.Swagger2Config.class})
+@EnableThreadPool
+@Import({com.atguigu.gmall.common.config.Swagger2Config.class, RedissonAutoConfiguration.class})
 @SpringBootApplication
 @EnableDiscoveryClient
 @MapperScan(value = "com.atguigu.gmall.product.mapper")

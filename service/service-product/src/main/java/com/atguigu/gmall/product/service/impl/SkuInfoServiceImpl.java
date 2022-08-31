@@ -1,5 +1,6 @@
 package com.atguigu.gmall.product.service.impl;
 
+import com.atguigu.gmall.common.constant.SysRedisConst;
 import com.atguigu.gmall.model.product.*;
 import com.atguigu.gmall.model.to.CategoryViewTo;
 import com.atguigu.gmall.model.to.SkuDetailTo;
@@ -9,8 +10,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.atguigu.gmall.product.mapper.SkuInfoMapper;
+import org.redisson.api.RBloomFilter;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -41,6 +45,11 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo>
     @Autowired
     SpuSaleAttrService spuSaleAttrService;
 
+
+    @Autowired
+    RedissonClient redissonClient;
+
+    @Transactional
     @Override
     public void saveSkuInfo(SkuInfo skuInfo) {
         //分析，需要保存到哪些表中
@@ -76,6 +85,13 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo>
             skuSaleAttrValue.setSpuId(skuInfo.getSpuId());
         }
         skuSaleAttrValueService.saveBatch(skuSaleAttrValueList);
+
+        /**
+         * 在新增商品的时候，直接将商品的id存储到布隆过滤器中
+         */
+
+        RBloomFilter<Object> bloomFilter = redissonClient.getBloomFilter(SysRedisConst.BLOOM_SKUID);
+        bloomFilter.add(skuId);
     }
 
     @Override
@@ -121,6 +137,10 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo>
         BigDecimal price = get1010Price(skuId);
         detailTo.setPrice(price);
 
+
+
+
+
         //(√)4、商品（sku）所属的SPU当时定义的所有销售属性名值组合（固定好顺序）。
         //          spu_sale_attr、spu_sale_attr_value
         //          并标识出当前sku到底spu的那种组合，页面要有高亮框 sku_sale_attr_value
@@ -164,7 +184,11 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo>
         return skuImage;
     }
 
-
+    @Override
+    public List<Long> findAllSkuId() {
+       List<Long> skuIds =  skuInfoMapper.getAllSkuId();
+        return skuIds;
+    }
 }
 
 

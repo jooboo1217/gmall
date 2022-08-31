@@ -29,4 +29,7 @@ public interface SkuInfoService extends IService<SkuInfo> {
     SkuInfo getDetailSkuInfo(Long skuId);
 
     List<SkuImage> getDetailSkuImages(Long skuId);
+
+    List<Long> findAllSkuId();
+
 }
