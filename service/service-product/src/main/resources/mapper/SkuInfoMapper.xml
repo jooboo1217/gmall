@@ -34,6 +34,6 @@
     </select>
 
     <select id="getAllSkuId" resultType="java.lang.Long">
-        select id from sku_info where id = 50
+        select id from sku_info
     </select>
 </mapper>

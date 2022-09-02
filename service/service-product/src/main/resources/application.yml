@@ -1,17 +1,20 @@
 spring:
+  
+  profiles:
+    include: sharding
   datasource:
     username: root
     password: 123456
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://192.168.6.200:3306/gmall_product?useSSL=false&characterEncoding=utf-8
-  redis:
-    host: 192.168.6.200
-    password: Lfy123456
+#  redis:
+#    host: 192.168.6.200
+#    password: Lfy123456
   #    链路追踪
-  zipkin:
-    base-url: http://192.168.6.200:9411/
-    sender:
-      type: web
+#  zipkin:
+#    base-url: http://192.168.6.200:9411/
+#    sender:
+#      type: web
 server:
   port: 9001
   tomcat:
@@ -21,4 +24,8 @@ minio:
   accessKey: admin
   secreKey: admin123456
   bucketName: gmall
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 @AutoConfigureAfter(RedisAutoConfiguration.class)
 public class RedissonAutoConfiguration {
 
-    @Autowired
+    @Resource
     RedisProperties redisProperties;
 
     @Bean

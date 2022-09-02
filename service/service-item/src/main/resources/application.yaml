@@ -1,0 +1,27 @@
+server:
+  port: 7002
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+#  zipkin:
+#    base-url: http://192.168.6.200:9411/
+#    sender:
+#      type: web
+  datasource:
+    tomcat:
+#  redis:
+#    host: 192.168.6.200
+#    password: Lfy123456
+
+
+
+app:
+  thread-pool:
+    core: 4
+    max: 8
+    queue-size: 2000
+    keep-alive-time: 300
+

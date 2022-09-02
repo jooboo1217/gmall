@@ -2,6 +2,8 @@ package com.atguigu.gmall.product.service.impl;
 
 import com.atguigu.gmall.model.product.BaseCategory2;
 import com.atguigu.gmall.model.to.CategoryTreeTo;
+import com.atguigu.stater.cache.annotation.GmallCache;
+import com.atguigu.stater.cache.constant.SysRedisConst;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -29,12 +31,14 @@ public class BaseCategory2ServiceImpl extends ServiceImpl<BaseCategory2Mapper, B
         List<BaseCategory2> list = baseCategory2Mapper.selectList(queryWrapper);
         return list;
     }
-
+    
+    
+    @GmallCache(cacheKey = SysRedisConst.CACHE_CATGORYS)
     @Override
     public List<CategoryTreeTo> getAllCategoryWithTree() {
 
         List<CategoryTreeTo> categoryTreeToList = baseCategory2Mapper.getAllCategoryWithTree();
-
+     
 
         return categoryTreeToList;
     }

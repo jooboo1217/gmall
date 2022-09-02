@@ -1,0 +1,27 @@
+
+server:
+  port: 7001
+  #  链路追踪
+
+#spring:
+#  zipkin:
+#    base-url: http://192.168.200.100:9411/
+#    sender:
+#      type: web
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+  
+#  redis:
+#    host: 192.168.6.200
+#    password: Lfy123456
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000

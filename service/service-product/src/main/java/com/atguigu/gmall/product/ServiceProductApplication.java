@@ -8,8 +8,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+
+@EnableScheduling
 @EnableThreadPool
-@Import({com.atguigu.gmall.common.config.Swagger2Config.class, RedissonAutoConfiguration.class})
+@Import({com.atguigu.gmall.common.config.Swagger2Config.class})
 @SpringBootApplication
 @EnableDiscoveryClient
 @MapperScan(value = "com.atguigu.gmall.product.mapper")

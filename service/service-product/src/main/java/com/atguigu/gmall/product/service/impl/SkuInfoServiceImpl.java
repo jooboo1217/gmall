@@ -1,12 +1,12 @@
 package com.atguigu.gmall.product.service.impl;
 
-import com.atguigu.gmall.common.constant.SysRedisConst;
+
 import com.atguigu.gmall.model.product.*;
 import com.atguigu.gmall.model.to.CategoryViewTo;
 import com.atguigu.gmall.model.to.SkuDetailTo;
 import com.atguigu.gmall.product.mapper.BaseCategory3Mapper;
 import com.atguigu.gmall.product.service.*;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.atguigu.stater.cache.constant.SysRedisConst;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.atguigu.gmall.product.mapper.SkuInfoMapper;
