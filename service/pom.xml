@@ -12,6 +12,8 @@
         <module>service-product</module>
         <module>web-all</module>
         <module>service-item</module>
+        <module>service-search</module>
+        <module>service-user</module>
     </modules>
 
 
@@ -103,5 +105,7 @@
                     <artifactId>feign-client</artifactId>
                     <version>1.0-SNAPSHOT</version>
                 </dependency>
+
+        
     </dependencies>
 </project>

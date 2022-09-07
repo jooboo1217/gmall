@@ -16,9 +16,9 @@ spring:
 #    sender:
 #      type: web
 server:
-  port: 9001
-  tomcat:
-    max-connections: 200
+  port: 9000
+#  tomcat:
+#    max-connections: 200
 minio:
   endpoint: http://192.168.6.200:9000
   accessKey: admin

@@ -1,13 +1,15 @@
+#application.yaml的优先级低，项目刚一启动并不能读取
+#bootstrap.properties/yaml
 server:
   port: 80
-  #链路追踪
 
+#配置链路追踪地址
 spring:
   zipkin:
-    base-url: http://192.168.6.200:9411/
+    base-url: http://192.168.200.100:9411/
     sender:
       type: web
-#处理跨域问题
+
   cloud:
     gateway:
       globalcors:
@@ -17,6 +19,8 @@ spring:
             allowedMethods: "*" #允许所有请求方式跨域
             allowedHeaders: "*" #复杂跨域的原因就是因为带来一些复杂的请求头导致，
             allowCredentials: true #允许带一些安全标致跨域 比如：Cookie
+
+
       #所有的网关路由规则
       routes:
         - id: product_route # 以 /admin/product 开头的所有请求都lb(loadbalancer)转给service-product
@@ -24,12 +28,22 @@ spring:
           predicates:  #断言
             - Path=/admin/product/**
 
+
+        - id: incr_route
+          uri: lb://service-item
+          predicates:
+            - Path=/lock/incr
+              
+              
+        - id: user_route
+          uri: lb://service-user
+          predicates:
+            - Path=/api/user/**      
+
         - id: web_all_route
           uri: lb://web-all
           predicates:
             - Host=**.gmall.com
 
-        - id: incr_route
-            uri: lb://service-item
-            predicates:
-              - Path=/lock/incr
+
+

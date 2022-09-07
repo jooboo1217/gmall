@@ -11,7 +11,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @EnableDiscoveryClient
 @EnableCircuitBreaker
-@EnableFeignClients(basePackages = {"com.atguigu.gmall.feign.item","com.atguigu.gmall.feign.product"})
+@EnableFeignClients(basePackages = {"com.atguigu.gmall.feign.item",
+                                    "com.atguigu.gmall.feign.product",
+                                    "com.atguigu.gmall.feign.search"})
 public class WeballMainApplication {
     public static void main(String[] args) {
         SpringApplication.run(WeballMainApplication.class,args);
