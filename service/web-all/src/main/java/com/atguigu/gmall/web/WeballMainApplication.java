@@ -13,7 +13,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableCircuitBreaker
 @EnableFeignClients(basePackages = {"com.atguigu.gmall.feign.item",
                                     "com.atguigu.gmall.feign.product",
-                                    "com.atguigu.gmall.feign.search"})
+                                    "com.atguigu.gmall.feign.search",
+                                    "com.atguigu.gmall.feign.cart"})
 public class WeballMainApplication {
     public static void main(String[] args) {
         SpringApplication.run(WeballMainApplication.class,args);

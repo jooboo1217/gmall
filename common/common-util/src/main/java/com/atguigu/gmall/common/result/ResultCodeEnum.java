@@ -28,7 +28,8 @@ public enum ResultCodeEnum {
     SECKILL_ORDER_SUCCESS(218, "下单成功"),
     COUPON_GET(220, "优惠券已经领取"),
     COUPON_LIMIT_GET(221, "优惠券已发放完毕"),
-    LOGIN_ERROR(888,"账号或密码错误" );
+    LOGIN_ERROR(888,"账号或密码错误" ),
+    CART_OVERFLOW(30000,"购物车存满了，存不上了，删一删购物车" );
 
     private Integer code;
 
