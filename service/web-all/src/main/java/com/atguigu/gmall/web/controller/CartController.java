@@ -39,4 +39,18 @@ public class CartController {
         //显示购物车信息是一个异步请求，不需要远程调用
         return "cart/index";
     }
+    
+    
+    @GetMapping("/cart/deleteChecked")
+    public String deleteChecked(){
+        /**
+         * redirect: 重定向
+         * forward: 转发
+         */
+        cartFeignClient.deleteChecked();
+        return "redirect:http://cart.gmall.com/cart.html";
+    }
+
+  
+    
 }

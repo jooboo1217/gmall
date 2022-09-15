@@ -20,6 +20,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -183,7 +184,7 @@ public class CartServcieImpl implements CartService {
         executor.submit( () ->{
             //2、绑定请求到到这个线程
             RequestContextHolder.setRequestAttributes(attributes);
-            updateCartAllItemsPrice(cartKey,infos);
+            updateCartAllItemsPrice(cartKey);
             //3.移除数据
             RequestContextHolder.resetRequestAttributes();
         });
@@ -243,21 +244,67 @@ public class CartServcieImpl implements CartService {
         hashOps.put(skuId.toString(),Jsons.toStr(item));
     }
 
-    //更新购物车内的价格
-    private void updateCartAllItemsPrice(String cartKey, List<CartInfo> cartInfos) {
-        //先获得是哪个购物车
-        BoundHashOperations<String, String, String> cartOps = redisTemplate.boundHashOps(cartKey);
-        //判断购物车是否为空
-        cartInfos.stream()
-                .forEach(cartInfo -> {
-                    //1.查出实时价格,远程调用查询
+    /**
+     * 删除勾选中的商品
+     * @param cartKey
+     */
+    @Override
+    public void deleteChecked(String cartKey) {
+        //获取购物车
+        BoundHashOperations<String, String, String> hashOps = redisTemplate.boundHashOps(cartKey);
+        //获取购物车中勾中的商品
+        List<String> ids = getCheckedItems(cartKey).stream()
+                .map(cartInfo -> cartInfo.getSkuId().toString())
+                .collect(Collectors.toList());
+        
+        if (ids != null && ids.size() > 0 ){
+            hashOps.delete(ids.toArray());
+        }
+    }
+
+    /**
+     * 获取所有勾中的商品
+     * @param cartKey
+     * @return
+     */
+    @Override
+    public List<CartInfo> getCheckedItems(String cartKey) {
+        List<CartInfo> cartList = getCartList(cartKey);
+        List<CartInfo> checkedItems = cartList.stream()
+                .filter(cart -> cart.getIsChecked() == 1)
+                .collect(Collectors.toList());
+        return checkedItems;
+    }
+
+    /**
+     * //更新购物车内的价格
+     * @param cartKey
+     */
+    public void updateCartAllItemsPrice(String cartKey) {
+        BoundHashOperations<String, String, String> cartOps =
+                redisTemplate.boundHashOps(cartKey);
+
+        System.out.println("更新价格启动：" + Thread.currentThread());
+        cartOps
+                .values()
+                .stream()
+                .map(str ->
+                        Jsons.toObj(str, CartInfo.class)
+                ).forEach(cartInfo -> {
+                    //1、查出最新价格  15ms
                     Result<BigDecimal> price = skuFeignClient.getSku1010Price(cartInfo.getSkuId());
-                    //2.设置新价格
-                    cartInfo.setSkuPrice(price.getData());//新价格
-                    cartInfo.setUpdateTime(new Date());//更新时间
-                    //3.更新购物车价格
-                    cartOps.put(cartInfo.getSkuId().toString(),Jsons.toStr(cartInfo));
+                    //2、设置新价格
+                    cartInfo.setSkuPrice(price.getData());
+                    cartInfo.setUpdateTime(new Date());
+                    //3、更新购物车价格  5ms。给购物车存数据之前再做一个校验。
+                    //100%防得住
+                    if(cartOps.hasKey(cartInfo.getSkuId().toString())){
+                        cartOps.put(cartInfo.getSkuId().toString(), Jsons.toStr(cartInfo));
+                    }
+
                 });
+
+        System.out.println("更新价格结束：" + Thread.currentThread());
     }
 
     /**
@@ -307,10 +354,10 @@ public class CartServcieImpl implements CartService {
         //判断用户id是否存在，优先存储用户的id
         if (authInfo.getUserId() != null){
             //用户登录了，就用用户userId做购物车的键
-            cartKey = cartKey+":"+authInfo.getUserId();  
+            cartKey = cartKey+""+authInfo.getUserId();  
         }else {
             //用户未登录就用userTempId做购物车键
-            cartKey = cartKey+":"+authInfo.getUserTempId();
+            cartKey = cartKey+""+authInfo.getUserTempId();
         }
         return cartKey;
     }

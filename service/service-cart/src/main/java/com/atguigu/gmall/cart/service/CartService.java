@@ -83,5 +83,25 @@ public interface CartService {
      * @param cartKey
      */
     void updateChecked(Long skuId, String cartKey,Integer status);
+
+    /**
+     * 删除勾选中的商品
+     * @param cartKey
+     */
+    void deleteChecked(String cartKey);
+
+    /**
+     * 获取所有勾中的商品
+     * @param cartKey
+     * @return
+     */
+    List<CartInfo> getCheckedItems(String cartKey);
+
+    /**
+     * //更新购物车内的价格
+     * @param cartKey
+     */
+    void updateCartAllItemsPrice(String cartKey);
+
     
 }

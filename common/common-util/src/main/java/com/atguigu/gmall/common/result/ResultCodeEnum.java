@@ -1,5 +1,6 @@
 package com.atguigu.gmall.common.result;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
 import lombok.Getter;
 
 /**
@@ -26,11 +27,16 @@ public enum ResultCodeEnum {
     SECKILL_FAIL(216, "抢单失败"),
     SECKILL_ILLEGAL(217, "请求不合法"),
     SECKILL_ORDER_SUCCESS(218, "下单成功"),
+    TOKEN_INVAILD(4000,"页面已过期，请重新刷新"),
     COUPON_GET(220, "优惠券已经领取"),
     COUPON_LIMIT_GET(221, "优惠券已发放完毕"),
     LOGIN_ERROR(888,"账号或密码错误" ),
-    CART_OVERFLOW(30000,"购物车存满了，存不上了，删一删购物车" );
+    CART_OVERFLOW(30000,"购物车存满了，存不上了，删一删购物车" ),
+    CART_ITEM_SKUNUM_OVERFLOW(3001,"单个商品不允许超过200，请重新操作"),
+    ORDER_NO_STOCK(4001,"订单商品库存不足："),
+    ORDER_PRICE_CHANGED(4002,"订单中以下商品价格变化，请重新刷新再试；");
 
+    
     private Integer code;
 
     private String message;

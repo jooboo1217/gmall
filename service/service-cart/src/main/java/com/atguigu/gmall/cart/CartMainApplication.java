@@ -1,10 +1,14 @@
 package com.atguigu.gmall.cart;
 
+import com.atguigu.gmall.common.config.annotation.EnableAutoExceptionHandler;
+import com.atguigu.gmall.common.config.annotation.EnableAutoFeignInterceptor;
 import com.atguigu.gmall.common.config.annotation.EnableThreadPool;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
+@EnableAutoFeignInterceptor
+@EnableAutoExceptionHandler
 @EnableThreadPool
 @SpringCloudApplication
 @EnableFeignClients(basePackages = {"com.atguigu.gmall.feign.product"})

@@ -2,12 +2,16 @@ package com.atguigu.gmall.cart.api;
 
 import com.atguigu.gmall.cart.service.CartService;
 import com.atguigu.gmall.common.result.Result;
+import com.atguigu.gmall.model.cart.CartInfo;
 import com.atguigu.gmall.model.product.SkuInfo;
+import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/inner/rpc/cart")
@@ -32,6 +36,29 @@ public class CartController {
         
         return Result.ok(skuInfo);
     }
-    
- 
+
+    /**
+     * 删除勾选中的所有商品
+     * @return
+     */
+    @GetMapping("/deleteChecked")
+    public  Result deleteChecked(){
+        //获取是哪个购物车
+        String cartKey = cartService.determinCartKey();
+        cartService.deleteChecked(cartKey);
+        return Result.ok();
+    }
+
+
+    /**
+     * 获取所有选中的商品
+     * @return
+     */
+    @GetMapping("/checked/list")
+    public Result<List<CartInfo>> getChecked(){
+        String cartKey = cartService.determinCartKey();
+        List<CartInfo> checkedItems = cartService.getCheckedItems(cartKey);
+        return Result.ok(checkedItems);
+    }
+
 }

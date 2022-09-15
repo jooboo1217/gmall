@@ -19,7 +19,7 @@ public class IndexController {
     @Autowired
     CategoryTreeFeign categoryTreeFeign;
     //访问欢迎页
-    @GetMapping({"/","/index"})
+    @GetMapping({"/","/index","/index.html"})
     public String indexPage(Model model){
 
         //分析：首页上需要显示三级，三家分类从产品微服务可以得到，需要使用远程调用

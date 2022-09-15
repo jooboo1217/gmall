@@ -18,21 +18,24 @@ public class AuthUtils {
      */
     
     public static UserAuthInfo getCurrentAuthInfo(){
-        
-        //1线程中获得请求数据
-        ServletRequestAttributes requestAttributes 
-                = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = requestAttributes.getRequest();
-        //2.获得信息
-        UserAuthInfo userAuthInfo = new UserAuthInfo();//userId
-        String header = request.getHeader(SysRedisConst.USERID_HEADER);//USERID_HEADER--在请求头中存储的key
-        if (!StringUtils.isEmpty(header)){
-            userAuthInfo.setUserId(Long.parseLong(header));
+
+        //1、拿到老请求
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+
+        //2、获取信息
+        UserAuthInfo authInfo = new UserAuthInfo();
+        String header = request.getHeader(SysRedisConst.USERID_HEADER);
+        if(!StringUtils.isEmpty(header)){
+            authInfo.setUserId(Long.parseLong(header));
         }
 
-        String userTempId = request.getHeader(SysRedisConst.USERTEMPID_HEADER);
-        userAuthInfo.setUserTempId(userTempId);//无论临时id是否存在都添加
-    
-        return userAuthInfo;
+        String tempHeader = request.getHeader(SysRedisConst.USERTEMPID_HEADER);
+        authInfo.setUserTempId(tempHeader);
+
+
+
+        return authInfo;
     }
+
 }
